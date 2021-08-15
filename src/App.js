@@ -7,6 +7,10 @@ import ProductPage from './pages/product';
 import ChartPage from './pages/chart';
 import CheckoutPage from './pages/checkout';
 
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/js/bootstrap.bundle';
+import 'font-awesome/css/font-awesome.min.css';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import './App.css';
 
 class App extends Component {
