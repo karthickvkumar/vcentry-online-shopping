@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
+import DataContext from './context/data-context';
 
 import HomePage from './pages/home';
 import ShopPage from './pages/shop';
@@ -14,17 +15,37 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import './App.css';
 
 class App extends Component {
+
+  constructor(props){
+    super(props);
+    this.state = {
+      selectProduct : []
+    }
+  }
+
+  onAddCart = (product) => {
+    this.state.selectProduct.push(product);
+    this.setState({
+      selectProduct : this.state.selectProduct
+    })
+  }
+
   render() {
     return (
-      <BrowserRouter>
-        <Switch>
-          <Route path="/" exact component={HomePage}></Route>
-          <Route path="/shop" component={ShopPage}></Route>
-          <Route path="/product/:id" component={ProductPage}></Route>
-          <Route path="/cart" component={ChartPage}></Route>
-          <Route path="/checkout" component={CheckoutPage}></Route>
-        </Switch>
-      </BrowserRouter>
+      <DataContext.Provider value={{
+        onSelect : this.onAddCart,
+        cartProduct : this.state.selectProduct
+      }}>
+        <BrowserRouter>
+          <Switch>
+            <Route path="/" exact component={HomePage}></Route>
+            <Route path="/shop" component={ShopPage}></Route>
+            <Route path="/product/:id" component={ProductPage}></Route>
+            <Route path="/cart" component={ChartPage}></Route>
+            <Route path="/checkout" component={CheckoutPage}></Route>
+          </Switch>
+        </BrowserRouter>
+      </DataContext.Provider>
     );
   }
 }

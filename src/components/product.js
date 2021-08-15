@@ -1,19 +1,26 @@
 import React, { Component } from 'react';
 import { NavLink } from "react-router-dom";
+import DataContext from '../context/data-context'
 
 class ProductComponent extends Component {
+
+    addToCart(product){
+        product.quantity = 1;
+        this.context.onSelect(product);
+    }
+
     render() {
-        return (
-            <div className="row">
-                <div className="col-md-3 col-sm-6">
+        let products = this.props.products.map((product, index) => {
+            return (
+                <div className="col-md-3 col-sm-6" key={index}>
                     <div className="single-product">
                         <div className="product-f-image">
-                            <img src={require('../images/product-1.jpg').default} alt="" style={{ 'width': "100%" }} />
+                            <img src={product.image} alt="" style={{ 'width': "100%" }} />
                             <div className="product-hover">
-                                <a href="#" className="add-to-cart-link"><i className="fa fa-shopping-cart"></i> Add to
+                                <a onClick={() => this.addToCart(product)} className="add-to-cart-link"><i className="fa fa-shopping-cart"></i> Add to
                                     cart
                                 </a>
-                                <NavLink to="/product/1"
+                                <NavLink to={"/product/" + product.id}
                                     className="view-details-link">
                                     <i className="fa fa-link"></i>
                                     See details
@@ -22,16 +29,31 @@ class ProductComponent extends Component {
                             </div>
                         </div>
 
-                        <h2><a href="single-product.html">Samsung S 10</a></h2>
+                        <h2><a href="single-product.html">{product.name}</a></h2>
 
                         <div className="product-carousel-price">
-                            <ins>$700</ins> <del>$1000</del>
+                            <ins>{product.discount_price}</ins> <del>{product.actual_price}</del>
                         </div>
                     </div>
                 </div>
-            </div>
+            );
+        })
+        return (
+            <DataContext.Consumer>
+                {
+                    () => {
+                        return(
+                            <div className="row">
+                                {products}
+                            </div>
+                        )
+                    }
+                }
+            </DataContext.Consumer>
+            
         );
     }
 }
 
+ProductComponent.contextType = DataContext;
 export default ProductComponent;
